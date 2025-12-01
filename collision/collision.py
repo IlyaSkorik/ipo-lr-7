@@ -42,3 +42,25 @@ def intersectionAreaRect(rect1, rect2):
         return area
     else:
         return 0
+
+def intersectionAreaMultiRect(rectangles):
+    if not rectangles:
+        return 0
+
+    for i, rect in enumerate(rectangles, start=1):
+        if not isCorrectRect(rect):
+            raise RectCorrectError(f"{i}й прямоугольник некоректный")
+
+    (x_min, y_min), (x_max, y_max) = rectangles[0]
+
+    for rect in rectangles[1:]:
+        (x1, y1), (x2, y2) = rect
+        x_min = max(x_min, x1)
+        y_min = max(y_min, y1)
+        x_max = min(x_max, x2)
+        y_max = min(y_max, y2)
+
+        if x_min >= x_max or y_min >= y_max:
+            return 0
+        
+    return (x_max - x_min) * (y_max - y_min)
